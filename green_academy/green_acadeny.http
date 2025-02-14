@@ -1,0 +1,102 @@
+### Get Courses by student
+GET http://127.0.0.1:8000/courses
+Authorization: Basic {{BASIC_TOKEN}}
+
+
+### Fetch all courses
+GET http://localhost:8000/courses
+
+### Create a new course
+POST http://localhost:8000/api/courses/
+Content-Type: application/json
+
+{
+        "title": "BioTech",
+        "description": "Some descriptions",
+        "instructor": "Bola Akin",
+        "start_date": "2025-03-04",
+        "end_date": "2025-05-04"
+}
+
+### Obtain JWT token for authentication
+POST http://localhost:8000/api/token/
+Content-Type: application/x-www-form-urlencoded
+
+username={{USERNAME}}&password={{PASSWORD}}
+
+### Fetch a specific course by ID
+GET http://localhost:8000/api/courses/5/
+Authorization: {"Bearer {JWT_Token}"}
+
+### Fetch courses using JWT token for authorization
+GET http://localhost:8000/courses/
+Authorization: {"Bearer {JWT_Token}"}
+cd
+### Update a specific course by ID
+PUT http://localhost:8000/api/courses/2
+Authorization: {"Bearer {JWT_Token}"}
+Content-Type: application/json
+
+{
+  "title": "Python",
+  "description": "Python is a high-level, interpreted, interactive and object-oriented scripting language. Python is designed to be highly readable. It uses English keywords frequently whereas other languages use punctuation, and it has fewer syntactical constructions than other languages.",
+  "instructor": "Jane Doe",
+  "start_date": "2025-03-01",
+  "end_date": "2025-06-01"
+}
+
+### Delete a specific course by ID
+DELETE http://localhost:8000/api/courses/8/
+Authorization: {"Bearer {JWT_Token}"}
+
+### Fetch enrollments with pagination
+GET http://localhost:8000/enrollments/?page=2
+Authorization: {"Bearer {JWT_Token}"}
+
+### Create a new enrollment
+POST http://localhost:8000/api/enrollments/
+Authorization: {"Bearer {JWT_Token}"}
+Content-Type: application/json
+
+{ "student_id": "000039",
+  "student_name": "Adeola Adeleke",
+  "student_email": "Adelekes@gmail.com",
+  "course":  "Mobile Dev"
+}
+
+### Fetch a specific enrollment by ID
+GET http://localhost:8000/enrollments/5/
+Authorization: {"Bearer {JWT_Token}"}
+
+### Update a specific enrollment by ID
+PUT http://localhost:8000/enrollments/14/
+Authorization: {"Bearer {JWT_Token}"}
+Content-Type: application/json
+
+{
+    "student_id": "000059",
+    "student_name": "Adeola Adeleke",
+    "student_email": "Adelekem@gmail.com",
+    "course": "Mobile Dev"
+}
+
+### Partially update a specific enrollment by ID
+PATCH http://localhost:8000/enrollments/14/
+Authorization: {"Bearer {JWT_Token}"}
+Content-Type: application/json
+
+{
+    "course": "Python"
+}
+
+### Delete a specific enrollment by ID
+DELETE http://localhost:8000/enrollments/17/
+Authorization: {"Bearer {JWT_Token}"}
+
+### Fetch enrollments for a specific student using JWT token for authorization
+GET http://localhost:8000/my-enrollments/?student_id=00004
+Authorization: {"Bearer {JWT_Token}"}
+
+### Fetch enrollments for a specific course
+GET http://localhost:8000/my-enrollments/?course_id=4
+Authorization: {"Bearer {JWT_Token}"}
