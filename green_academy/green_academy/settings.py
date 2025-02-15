@@ -25,6 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security: Load sensitive data from environment variables
 SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise ValueError("Missing SECRET_KEY environment variable")
 JWT_SECRET = os.getenv("JWT_SECRET")
 BASIC_TOKEN = os.getenv("BASIC_TOKEN")
 USERNAME = os.getenv("USERNAME")
@@ -54,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework.authtoken',
     'api',
     'drf_yasg',
 ]

@@ -60,9 +60,6 @@ class EnrollmentSerializer(serializers.ModelSerializer):
         student_email = data.get("student_email")
         course = data.get("course")
 
-        if Enrollment.objects.filter(course=course).filter(
-                models.Q(student_id=student_id) | models.Q(student_email=student_email)
-        ).exists():
+        if Enrollment.objects.filter(student_id=student_id, course=course, student_email=student_email).exists():
             raise serializers.ValidationError("This student is already enrolled in this course.")
-
         return data
