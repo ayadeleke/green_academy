@@ -40,6 +40,8 @@ class EnrollmentSerializer(serializers.ModelSerializer):
         validators=[EmailValidator()]  # Ensures a valid email
     )
 
+    student_id = serializers.CharField(max_length=50)
+
     course = serializers.SlugRelatedField(
         queryset=Course.objects.all(),
         slug_field='title'
@@ -60,6 +62,15 @@ class EnrollmentSerializer(serializers.ModelSerializer):
         student_email = data.get("student_email")
         course = data.get("course")
 
+        # Ensure student_id is valid
+        if not isinstance(student_id, str):
+            raise serializers.ValidationError({"student_id": "Invalid student ID format."})
+
+        # Validate course existence
+        if not Course.objects.filter(title=course.title).exists():
+            raise serializers.ValidationError({"course": "Invalid course selection."})
+
+        # Avoid duplicate enrollment
         if Enrollment.objects.filter(student_id=student_id, course=course, student_email=student_email).exists():
             raise serializers.ValidationError("This student is already enrolled in this course.")
         return data

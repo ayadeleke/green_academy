@@ -17,7 +17,6 @@ from rest_framework.exceptions import APIException
 from django.db import IntegrityError
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-
 from api.permissions import IsAdmin, IsInstructor, IsStudent, IsAdminOrInstructorOrReadOnly
 from api.models import Course, Enrollment
 from api.serializers import CourseSerializer, EnrollmentSerializer

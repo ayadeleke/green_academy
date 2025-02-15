@@ -37,4 +37,3 @@ class IsAdminOrInstructorOrReadOnly(permissions.BasePermission):
             return True  # Students have read-only access (GET, HEAD, OPTIONS)
 
         return False  # Deny all other cases
-

@@ -66,31 +66,34 @@ class EnrollmentSerializerTest(TestCase):
         )
 
         self.enrollment_data = {
-            "student_id": 1,
+            "student_id": "00001",
             "student_name": "Test Student",
             "student_email": "student@example.com",
-            "course": self.course.title,  # Use title, since serializer uses SlugRelatedField
+            "course": self.course.title,  # SlugRelatedField requires title
             "enrollment_date": date(2025, 2, 1),
         }
 
     def test_valid_enrollment_serializer(self):
+        """Ensure valid enrollment data passes serializer validation."""
         serializer = EnrollmentSerializer(data=self.enrollment_data)
         self.assertTrue(serializer.is_valid(), serializer.errors)
 
     def test_invalid_enrollment_serializer(self):
+        """Ensure invalid email raises validation error."""
         self.enrollment_data["student_email"] = "invalid-email"
         serializer = EnrollmentSerializer(data=self.enrollment_data)
         self.assertFalse(serializer.is_valid())
-        self.assertIn("Enter a valid email address.", str(serializer.errors))
+        self.assertIn("student_email", serializer.errors)
+        self.assertIn("Enter a valid email address.", serializer.errors["student_email"][0])
 
     def test_duplicate_enrollment(self):
-        # Create an enrollment in the database
+        """Ensure duplicate enrollment is not allowed."""
         Enrollment.objects.create(
-            student_id=1,
-            student_name="Test Student",
-            student_email="student@example.com",
+            student_id=self.enrollment_data["student_id"],
+            student_name=self.enrollment_data["student_name"],
+            student_email=self.enrollment_data["student_email"],
             course=self.course,
-            enrollment_date=date(2025, 2, 1),
+            enrollment_date=self.enrollment_data["enrollment_date"],
         )
 
         # Try to enroll the same student again
@@ -98,8 +101,8 @@ class EnrollmentSerializerTest(TestCase):
         self.assertFalse(serializer.is_valid())
 
         # Assert the actual error message
-        self.assertIn('student_id', str(serializer.errors))
-        self.assertIn('course', str(serializer.errors))
-        self.assertIn("unique", str(serializer.errors))
+        self.assertIn("non_field_errors", serializer.errors)
+        self.assertIn("The fields student_id, course must make a unique set.", serializer.errors["non_field_errors"][0])
+
 
 
