@@ -3,7 +3,7 @@ from django.core.cache import cache
 from django.db.models.query import QuerySet
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.decorators.vary import vary_on_cookie
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import SAFE_METHODS
@@ -11,7 +11,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.serializers import BaseSerializer
 from rest_framework.exceptions import APIException
 from django.db import IntegrityError
@@ -37,7 +37,7 @@ class EnrollmentPagination(PageNumberPagination):
     max_page_size = 100
 
 # Course ViewSet (Only Admins & Instructors Can Modify)
-@method_decorator(csrf_exempt, name='dispatch')
+@method_decorator(csrf_protect, name='dispatch')
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all().order_by("id")
     serializer_class = CourseSerializer
@@ -72,6 +72,7 @@ class CourseViewSet(viewsets.ModelViewSet):
             raise APIException("A course with this title already exists.")
 
 # Enrollment ViewSet (Admins & Instructors can filter by student_id & course_id)
+@method_decorator(csrf_protect, name='dispatch')
 class EnrollmentViewSet(viewsets.ModelViewSet):
     serializer_class = EnrollmentSerializer
     pagination_class = EnrollmentPagination
@@ -127,6 +128,7 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
             raise APIException("This student is already enrolled in this course.")
 
 # Student Enrollment ViewSet (Students can only see their own enrollments)
+@method_decorator(csrf_protect, name='dispatch')
 class StudentEnrollmentViewSet(viewsets.ModelViewSet):
     """Manages student-specific enrollments with filtering and caching."""
     serializer_class = EnrollmentSerializer
@@ -174,12 +176,18 @@ class StudentEnrollmentViewSet(viewsets.ModelViewSet):
         serializer.save()
         self.invalidate_cache()
 
-    def perform_destroy(self, instance: Enrollment) -> None:
+    def destroy(self, request, *args, **kwargs):
         """
-        Handles enrollment deletion and invalidates the cache.
+        Prevent students from deleting their enrollments.
+        Only Admins and Instructors can delete enrollments.
         """
-        self.invalidate_cache()
-        instance.delete()
+        if request.user.profile.role == "student":
+            return Response(
+                {"error": "Students are not allowed to delete enrollments."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        return super().destroy(request, *args, **kwargs)
 
     def invalidate_cache(self) -> None:
         """

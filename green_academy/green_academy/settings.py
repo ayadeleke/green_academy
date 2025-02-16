@@ -28,6 +28,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 if not SECRET_KEY:
     raise ValueError("Missing SECRET_KEY environment variable")
 JWT_SECRET = os.getenv("JWT_SECRET")
+if not JWT_SECRET:
+    raise ValueError("Missing JWT_SECRET environment variable")
 BASIC_TOKEN = os.getenv("BASIC_TOKEN")
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
@@ -150,6 +152,8 @@ CSP_DEFAULT_SRC = ("'self'",)
 CSP_SCRIPT_SRC = ("'self'", "https://trusted-scripts.com")
 CSP_STYLE_SRC = ("'self'", "https://trusted-styles.com")
 CSP_IMG_SRC = ("'self'", "https://trusted-images.com")
+CSP_OBJECT_SRC = ("'none'",)
+CSP_FRAME_ANCESTORS = ("'none'",)
 
 
 # Caching (Using Redis)
