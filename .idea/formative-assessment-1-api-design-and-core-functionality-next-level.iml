@@ -17,7 +17,7 @@
       <sourceFolder url="file://$MODULE_DIR$/green_academy" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.13 (formative-assessment-1-api-design-and-core-functionality-next-level)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.13 virtualenv at C:\Users\1\PycharmProjects\green_academy\.venv" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">
