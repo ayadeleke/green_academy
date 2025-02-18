@@ -33,6 +33,8 @@ if not JWT_SECRET:
 BASIC_TOKEN = os.getenv("BASIC_TOKEN")
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 # Debug Mode (set to False in Production)
 DEBUG = os.getenv("DEBUG", "True") == "True"
@@ -43,8 +45,12 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 # Database Configuration (Using environment variables)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / os.getenv("DB_NAME", "db.sqlite3"),
+        'NAME': 'green_academy_db',
+        'ENGINE': 'mysql.connector.django',
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
     }
 }
 
