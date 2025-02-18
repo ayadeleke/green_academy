@@ -18,7 +18,6 @@ schema_view = get_schema_view(
     ),
     public=True,
     permission_classes=[AllowAny],  # Allows public access to API documentation
-    authentication_classes=[],
 )
 
 # Define the URL patterns for routing requests
