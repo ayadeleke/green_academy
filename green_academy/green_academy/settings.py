@@ -23,15 +23,15 @@ if not JWT_SECRET:
     raise ValueError("Missing JWT_SECRET environment variable")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,green-academy.onrender.com").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,green-academy.onrender.com,aytreasure.pythonanywhere.com").split(",")
 
 # Database Configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'green_academy_db',
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'NAME': 'aytreasure$green_acadDB',
+        'USER': os.getenv("DB_USERNAME", 'aytreasure'),
+        # 'PASSWORD': os.getenv("DB_PASSWORD"),
         'HOST': os.getenv("DB_HOST", 'localhost'),
         'PORT': os.getenv("DB_PORT", 3306),
     }
