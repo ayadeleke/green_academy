@@ -3,6 +3,9 @@ from pathlib import Path
 from typing import Dict, Any
 import os
 import sys
+
+from django.core.checks import templates
+from django.template.context_processors import static
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -20,17 +23,17 @@ if not JWT_SECRET:
     raise ValueError("Missing JWT_SECRET environment variable")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,green-academy.onrender.com").split(",")
 
 # Database Configuration
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'green_academy_db',
         'USER': os.getenv("DB_USER"),
         'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': '127.0.0.1',
-        'PORT': 3306,
+        'HOST': os.getenv("DB_HOST", 'localhost'),
+        'PORT': os.getenv("DB_PORT", 3306),
     }
 }
 
@@ -99,7 +102,7 @@ USE_TZ = True
 
 # Static & Media Files
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -136,9 +139,9 @@ X_FRAME_OPTIONS = "DENY"
 
 # Content Security Policy (CSP)
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'", "https://trusted-scripts.com")
-CSP_STYLE_SRC = ("'self'", "https://trusted-styles.com")
-CSP_IMG_SRC = ("'self'", "https://trusted-images.com")
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net", "https://ajax.googleapis.com")
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com")
+CSP_IMG_SRC = ("'self'", "data:", "https://cdnjs.cloudflare.com")
 CSP_OBJECT_SRC = ("'none'",)
 CSP_FRAME_ANCESTORS = ("'none'",)
 
