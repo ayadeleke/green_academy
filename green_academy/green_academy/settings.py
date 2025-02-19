@@ -32,7 +32,7 @@ DATABASES = {
         'NAME': 'aytreasure$green_acadDB',
         'USER': os.getenv("NAME_DB"),
         'PASSWORD': os.getenv("PASSWORD_DB"),
-        'HOST': 'aytreasure.mysql.pythonanywhere-services.com',
+        'HOST': os.getenv("DB_HOST"),
         'PORT': '3306',
     }
 }
