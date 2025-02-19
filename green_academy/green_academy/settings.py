@@ -22,7 +22,7 @@ JWT_SECRET = os.getenv("JWT_SECRET")
 if not JWT_SECRET:
     raise ValueError("Missing JWT_SECRET environment variable")
 
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG =  False
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,green-academy.onrender.com,aytreasure.pythonanywhere.com").split(",")
 
 # Database Configuration
@@ -70,7 +70,7 @@ MIDDLEWARE = [
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://green-academy.onrender.com",
+    "https://aytreasure.pythonanywhere.com",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
@@ -140,7 +140,11 @@ SIMPLE_JWT = {
 }
 
 # Security Best Practices
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "https://aytreasure.pythonanywhere.com",
+    "https://green-academy.onrender.com",
+]
 SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "False") == "True"
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
@@ -155,13 +159,11 @@ CSP_IMG_SRC = ("'self'", "data:", "https://cdnjs.cloudflare.com")
 CSP_OBJECT_SRC = ("'none'",)
 CSP_FRAME_ANCESTORS = ("'none'",)
 
-# Caching with Redis
-CACHES: Dict[str, Dict[str, Any]] = {
+# Caching with pythonanywhere memcached
+CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
-        "KEY_PREFIX": "green_academy_cache"
+        "BACKEND": "django.core.cache.backends.memcached.PyLibMCCache",
+        "LOCATION": "aytreasure.memcached.pythonanywhere.com:11211",
     }
 }
 
