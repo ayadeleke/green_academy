@@ -30,10 +30,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'aytreasure$green_acadDB',
-        'USER': os.getenv("DB_USERNAME", 'aytreasure'),
-        # 'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': os.getenv("DB_HOST", 'localhost'),
-        'PORT': os.getenv("DB_PORT", 3306),
+        'USER': os.getenv("NAME_DB"),
+        'PASSWORD': os.getenv("PASSWORD_DB"),
+        'HOST': 'aytreasure.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
     }
 }
 
