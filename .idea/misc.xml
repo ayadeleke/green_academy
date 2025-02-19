@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Black">
-    <option name="sdkName" value="Python 3.13 (week-4-guided-learning-activity-caching-and-pagination-ayadeleke)" />
+    <option name="sdkName" value="Python 3.13 (green_academy)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.13 virtualenv at C:\Users\1\PycharmProjects\green_academy\.venv" project-jdk-type="Python SDK" />
 </project>

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/formative-assessment-1-api-design-and-core-functionality-next-level.iml" filepath="$PROJECT_DIR$/.idea/formative-assessment-1-api-design-and-core-functionality-next-level.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/green_academy.iml" filepath="$PROJECT_DIR$/.idea/green_academy.iml" />
     </modules>
   </component>
 </project>
